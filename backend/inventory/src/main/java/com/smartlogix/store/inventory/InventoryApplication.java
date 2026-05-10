@@ -1,0 +1,64 @@
+package com.smartlogix.store.inventory;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.*;
+import jakarta.persistence.*;
+import java.util.List;
+
+@SpringBootApplication
+@RestController
+@RequestMapping("/products")
+@CrossOrigin(origins = "*")
+public class InventoryApplication {
+
+    private final ProductRepository repository;
+
+    public InventoryApplication(ProductRepository repository) {
+        this.repository = repository;
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(InventoryApplication.class, args);
+    }
+
+    @GetMapping
+    public List<Product> getProducts() {
+        return repository.findAll();
+    }
+
+    @PostMapping
+    public Product addProduct(@RequestBody Product product) {
+        return repository.save(product);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        repository.deleteById(id);
+    }
+}
+
+@Entity
+class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private Double price;
+    private Integer stock;
+
+    // Getters y Setters (Necesarios para que Spring trabaje)
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
+    public Integer getStock() { return stock; }
+    public void setStock(Integer stock) { this.stock = stock; }
+}
+
+@Repository
+interface ProductRepository extends JpaRepository<Product, Long> { }

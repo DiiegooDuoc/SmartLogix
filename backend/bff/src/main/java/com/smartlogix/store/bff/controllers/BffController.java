@@ -2,6 +2,7 @@ package com.smartlogix.store.bff.controllers;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.http.*;
 import java.util.*;
 
 @RestController
@@ -54,6 +55,21 @@ public class BffController {
         return restTemplate.postForObject("http://localhost:8080/products", product, Object.class);
     }
 
+    // Editar producto
+    @PutMapping("/inventory/{id}")
+    public Object updateProduct(@PathVariable Long id, @RequestBody Object product) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entity = new HttpEntity<>(product, headers);
+        ResponseEntity<Object> response = restTemplate.exchange(
+                "http://localhost:8080/products/" + id,
+                HttpMethod.PUT,
+                entity,
+                Object.class
+        );
+        return response.getBody();
+    }
+
     // Eliminar producto
     @DeleteMapping("/inventory/{id}")
     public void deleteProduct(@PathVariable Long id) {
@@ -66,5 +82,20 @@ public class BffController {
     public Object addOrder(@RequestBody Object order) {
         // Redirige la compra al microservicio de Órdenes (8082)
         return restTemplate.postForObject("http://localhost:8082/orders", order, Object.class);
+    }
+
+    // Admin: actualizar estado de una orden
+    @PutMapping("/orders/{id}/status")
+    public Object updateOrderStatus(@PathVariable Long id, @RequestBody Object statusUpdate) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entity = new HttpEntity<>(statusUpdate, headers);
+        ResponseEntity<Object> response = restTemplate.exchange(
+                "http://localhost:8082/orders/" + id + "/status",
+                HttpMethod.PUT,
+                entity,
+                Object.class
+        );
+        return response.getBody();
     }
 }

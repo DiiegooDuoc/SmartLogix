@@ -40,6 +40,8 @@ public class AuthApplication {
             if (repo.count() == 0) {
                 repo.save(new User(null, "admin@smart.com", "admin123", "ADMIN"));
                 repo.save(new User(null, "cliente@gmail.com", "user123", "CLIENTE"));
+                repo.save(new User(null, "diego@gmail.com", "diego123", "CLIENTE"));
+                repo.save(new User(null, "antoane@gmail.com", "antoane123", "CLIENTE"));
                 System.out.println("--- Usuarios de prueba creados ---");
             }
         };
@@ -64,7 +66,6 @@ class User {
         this.role = role;
     }
 
-    // Getters y Setters
     public Long getId() { return id; }
     public String getEmail() { return email; }
     public String getPassword() { return password; }

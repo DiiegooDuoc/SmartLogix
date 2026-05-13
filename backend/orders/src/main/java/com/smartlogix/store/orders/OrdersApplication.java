@@ -41,7 +41,7 @@ class PurchaseOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String customerName;
-    private String productName; // <--- Nuevo campo
+    private String productName;
     private Double totalAmount;
 
    // Getters y Setters

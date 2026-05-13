@@ -49,7 +49,6 @@ class Product {
     private Double price;
     private Integer stock;
 
-    // Getters y Setters (Necesarios para que Spring trabaje)
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getName() { return name; }
